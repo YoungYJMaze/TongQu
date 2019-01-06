@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}同趣 - 您需要先确认账户{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>
+        您好, {{ current_user.username }}!
+    </h1>
+    <h3>您还未确认您的账户.</h3>
+    <p>
+     	在您重置之前，您暂时不能访问部分页面.
+        检查您的邮箱，您会发现一封来自同趣的邀请函.
+    </p>
+    <p>
+        没有收到？
+        <a href="{{ url_for('auth.resend_confirmation') }}">点击重新发送</a>
+    </p>
+</div>
+{% endblock %}

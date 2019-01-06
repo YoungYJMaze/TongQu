@@ -1,0 +1,12 @@
+<div class= "user_num">
+<div class="msg-box">
+    <div class="picture">
+        <img class="pop-card" data-position="right center" data-offset="-40"
+             data-href="{{ url_for('chat.get_profile', user_id=user.id) }}"
+             src="{{ user.gravatar() }}">
+    </div>
+    <div class="msg">
+        <span class="nickname">{{ user.username }}</span>
+    </div>
+</div>
+</div>

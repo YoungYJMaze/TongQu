@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}同趣 - 聊天室{% endblock %}
+
+{% block page_content %}
+
+<header>
+<link rel="stylesheet" href="{{ url_for('static', filename='semantic-ui/semantic.min.css')  }}">
+</header>
+<body>
+
+<script></script> 
+<div class="big-well" >
+    
+    <div class="chatlist">     
+        <div class="wrap">
+            <span class="span1">好友列表</span>
+        </div>
+        <hr>
+        {% include 'chat/_users_friends.html' %}
+    </div>
+    <div class="chatbox" id="a1">
+    <div class="span1">{{ othername }}</div>
+                 
+    <div class="message_panel" id="div1">
+        
+            <div class="messages">
+        <div class="ui text loader">Loading messages...</div>
+                {% include 'chat/_messages.html' %}
+            </div>
+            </div>
+    <div class="messages_i">
+    <div class="message_input" style=" height:147px;">
+        <textarea rows="4" id="message-textarea" placeholder="编辑您的消息，回车键或者点击按钮发送" ></textarea>
+    
+    </div>
+
+       </div> <input type="button" name="" value="发送消息" class="bt1" >
+</div></div>
+</body>
+
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript">
+var csrf_token="{{ token  }}";
+var messages_url = "{{ url_for('chat.get_messages') }}";
+var current_user_id = {{ current_user.id }};
+var socket = io("/friends");
+</script>
+{% endblock %}

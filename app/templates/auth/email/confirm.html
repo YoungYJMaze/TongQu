@@ -1,0 +1,7 @@
+ <p>尊敬的 {{ user.username }},</p>
+<p>请点击<a href="{{ url_for('auth.confirm', token=token, _external=True) }}">这里</a>来确认您的申请信息.</p>
+<p>您也可以选择将下面的地址复制粘贴到地址栏里</p>
+<p>{{ url_for('auth.confirm', token=token, _external=True) }}</p>
+<p>感谢信任</p>
+<p>同趣团队</p>
+<p><small>这封邮件不会获取您的任何信息，请放心。</small></p>

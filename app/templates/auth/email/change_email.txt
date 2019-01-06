@@ -1,0 +1,11 @@
+尊敬的 {{ user.username }}
+
+请您将下面的地址复制粘贴到地址栏里
+
+{{ url_for('auth.change_email', token=token, _external=True) }}以确认您的申请信息。
+
+感谢信任
+
+同趣团队
+
+这封邮件不会获取您的任何信息，请放心。

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}同趣 - 聊天室{% endblock %}
+
+{% block page_content %}
+
+<header>
+<link rel="stylesheet" href="{{ url_for('static', filename='semantic-ui/semantic.min.css')  }}">
+</header>
+<body>
+       
+<div class="big-well" >
+    
+    <div class="chatlist"></div>
+    <div class="chatbox" id="a1">
+             <div class="ui label black basic" title="Online users" style="margin-left:350px;margin-top:10px;">
+                <i class="user icon"></i> <span id="user-count">0</span> / {{ user_amount }}
+            </div>
+    
+    <div class="message_panel" id="div1">
+        <div class="ui text loader">Loading messages...</div>
+                {% include 'chat/_messages.html' %}
+            </div>
+    <div class="messages">
+    <div class="message_input" style="height:147px;">
+        <textarea rows="4" id="message-textarea" placeholder="编辑您的消息，回车键或者点击按钮发送" ></textarea>
+    </div>
+    
+
+       </div> <input type="button" name="" value="发送消息" class="bt1" >
+</div></div>
+</body>
+
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='semantic-ui/semantic.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/forms.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+ {{ moment.include_moment()}}
+<script type="text/javascript">
+var messages_url = "{{ url_for('chat.get_messages') }}";
+var current_user_id = {{ current_user.id }};
+var socket=io('http://127.0.0.1:5000/chat')
+</script>}
+{% endblock %}

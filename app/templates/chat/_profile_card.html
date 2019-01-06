@@ -1,0 +1,18 @@
+<div class="ui items profile-card">
+    <div class="item">
+        <div class="ui tiny image">
+            <img src="{{ user.gravatar() }}">
+        </div>
+        <div class="content">
+            <div class="header">{{ user.username }}
+                {% if user.is_admin %}<span class="ui orange circular label">admin</span>{% endif %}
+            </div>
+            <div class="description">{{ user.about_me or '这个用户很懒，没有留下任何信息' }}</div>
+        </div>
+    </div>
+    {% if current_user.is_admin and not user.is_admin %}
+        <i class="delete icon"></i>
+        <a class="delete-user-btn" href="#!" data-href="{{ url_for('admin.block_user', user_id=user.id) }}"
+           onclick="confirm('确认删除?')">Delete</a>
+    {% endif %}
+</div>

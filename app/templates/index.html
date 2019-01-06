@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}同趣{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>您好, {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}请登陆！{% endif %}!</h1>
+</div>
+<div>
+    {% if current_user.can(Permission.WRITE) %}
+    {{ wtf.quick_form(form) }}
+    {% endif %}
+</div>
+<hr>
+<br>
+{{ wtf.quick_form(form1) }}
+{% include '_posts.html' %}
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.index') }}
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{{ pagedown.include_pagedown() }}
+{% endblock %}

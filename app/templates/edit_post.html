@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block head %}
+    {{ super()  }}
+        <style type="text/css">
+#sortform {
+    width:150px;
+    text-align:center
+                            
+}
+    </style>
+    {% endblock %}
+{% block title %}同趣 - 更改想法{% endblock %}
+
+
+{% block page_content %}
+<div class="page-header">
+    <h1>更改想法</h1>
+</div>
+<div>
+    {{ wtf.quick_form(form) }}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{{ pagedown.include_pagedown() }}
+{% endblock %}

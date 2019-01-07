@@ -18,15 +18,19 @@
     bodyBgs[3] = "../static/image/11.png";
     bodyBgs[4] = "../static/image/5.png";
     bodyBgs[5] = "../static/image/14.png";
-    var randomBgIndex = Math.round( Math.random() * 5   );
+    bodyBgs[6] = "../static/image/15.png";
+    bodyBgs[7] = "../static/image/16.png";
+    bodyBgs[8] = "../static/image/17.png";
 
-    document.write('<style>body{background:url(' +bodyBgs[randomBgIndex]+ ') !important;}</style>');
+
+
+    var randomBgIndex = Math.round( Math.random() * 8   );
+    if(document.location =='http://127.0.0.1:5000/auth/login?next=%2F')
+
+{    document.write('<style>body{background:url(" ../static/image/11.png") !important;}</style>');}
+    else
+    { document.write('<style>body{background:url(' +bodyBgs[randomBgIndex]+ ') !important;}</style>');}
 </script>
-<script>
-        $(window).scroll(function () {
-            if ($(".navbar").offset().top > 50) {$(".navbar-fixed-top").addClass("top-nav");
-            }else {$(".navbar-fixed-top").removeClass("top-nav");}
-        })</script>
 <style type="text/css">
 #sortform {
         width:150px;
@@ -131,6 +135,6 @@ var csrf_token="{{ token  }}";
 var messages_url = "{{ url_for('chat.get_messages') }}";
 var current_user_id = {{ current_user.id }};
 var socket = io("http://127.0.0.1:5000/chat")
-</script>}
+</script>
 
 {% endblock %}

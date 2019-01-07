@@ -120,10 +120,10 @@ def friends():
     user=current_user
     token=current_user.generate_auth_token(3600)
     page = request.args.get('page', 1, type=int)
-    pagination = user.followers.paginate(
+    pagination = user.followed.paginate(
         page, per_page=current_app.config['FLASKY_FOLLOWERS_PER_PAGE'],
         error_out=False)
-    follows = [{'user': item.follower, 'timestamp': item.timestamp}
+    follows = [{'user': item.followed, 'timestamp': item.timestamp}
                for item in pagination.items]
 
     return render_template('chat/friends.html',token=token,follows=follows)
@@ -136,10 +136,10 @@ def friend(othername):
     user=current_user
     token=current_user.generate_auth_token(3600)
     page = request.args.get('page', 1, type=int)
-    pagination = user.followers.paginate(
+    pagination = user.followed.paginate(
         page, per_page=current_app.config['FLASKY_FOLLOWERS_PER_PAGE'],
         error_out=False)
-    follows = [{'user': item.follower, 'timestamp': item.timestamp}
+    follows = [{'user': item.followed, 'timestamp': item.timestamp}
                for item in pagination.items]
     other=User.query.filter(User.username==othername).first()
     othername_id=other.id

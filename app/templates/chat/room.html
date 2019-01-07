@@ -17,7 +17,10 @@
         <div class="wrap">
             <span class="span1">在线人数</span></div>
         <hr>
+
+        <div class="chatfriends">
     {% include 'chat/_users.html' %}
+     </div>
      </div>
     <div class="chatbox" id="a1">
 
@@ -50,5 +53,5 @@ var csrf_token="{{ token  }}";
 var messages_url = "{{ url_for('chat.get_messages') }}";
 var current_user_id = {{ current_user.id }};
 var socket = io("/room")
-</script>}
+</script>
 {% endblock %}

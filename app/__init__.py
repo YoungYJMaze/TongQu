@@ -49,7 +49,8 @@ def create_app(config_name):
 
     from .chat import chat as chat_blueprint
     app.register_blueprint(chat_blueprint, url_prefix='/chat')
-
+    from .api import api as api_blueprint
+    app.register_blueprint(api_blueprint, url_prefix='/api')
     return app
 
 

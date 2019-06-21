@@ -5,9 +5,15 @@
     <div class="picture" style="margin-left:600px;">
         
         <a href ="{{url_for('main.user' ,username=message.author.username )}}">
+           {% if message.author.real_avatar %}
+                       <img class="pop-card"  data-position="left center" data-offset="-40"
+             data-href="{{ url_for('chat.get_profile', user_id=message.author.id) }}"
+             src="{{ message.author.real_avatar }}" height="40" width="40">
+               {% else %}
         <img class="pop-card"  data-position="left center" data-offset="-40"
              data-href="{{ url_for('chat.get_profile', user_id=message.author.id) }}"
              src="{{ message.author.gravatar() }}">
+               {% endif %}
         </a>
     </div>
     <div class="msg" >
@@ -32,9 +38,15 @@
 
     <div class="picture1" style="margin-right:600px;">
         <a href ="{{url_for('main.user' ,username=message.author.username )}}">
-        <img class="pop-card"  data-position="right center" data-offset="-40"
+   {% if message.author.real_avatar %}
+                       <img class="pop-card"  data-position="left center" data-offset="-40"
+             data-href="{{ url_for('chat.get_profile', user_id=message.author.id) }}"
+             src="{{ message.author.real_avatar }}" height="40" width="40">
+               {% else %}
+        <img class="pop-card"  data-position="left center" data-offset="-40"
              data-href="{{ url_for('chat.get_profile', user_id=message.author.id) }}"
              src="{{ message.author.gravatar() }}">
+               {% endif %}
         </a>
     </div>
     <div class="msg1">

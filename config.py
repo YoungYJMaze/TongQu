@@ -19,6 +19,7 @@ class Config:
     FLASKY_FOLLOWERS_PER_PAGE = 30
     FLASKY_COMMENTS_PER_PAGE = 30
     CATCHAT_MESSAGE_PER_PAGE = 30
+    UPLOAD_FOLDER = os.getcwd()+ '/app/static/avatar/'
 
     @staticmethod
     def init_app(app):

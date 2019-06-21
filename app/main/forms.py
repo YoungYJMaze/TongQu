@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, BooleanField, SelectField,\
-    SubmitField
+from wtforms import StringField, TextAreaField, BooleanField, SelectField, \
+    SubmitField, FileField, SelectMultipleField, FloatField, RadioField,Label
 from wtforms.validators import DataRequired, Length, Email, Regexp
 from wtforms import ValidationError
 from flask_pagedown.fields import PageDownField
@@ -14,10 +14,15 @@ class NameForm(FlaskForm):
 
 
 class EditProfileForm(FlaskForm):
+    avatar = FileField('头像')
     name = StringField('真实姓名', validators=[Length(0, 64)])
     location = StringField('您的位置', validators=[Length(0, 64)])
     about_me = TextAreaField('个人介绍')
-    concern = TextAreaField('您的关注')
+
+    study = BooleanField('学习')
+    games = BooleanField('游戏')
+    sports = BooleanField('运动')
+    music =BooleanField('音乐')
     submit = SubmitField('提交')
 
 
@@ -30,9 +35,14 @@ class EditProfileAdminForm(FlaskForm):
                '用户名必须至少包含字母和数字')])
     confirmed = BooleanField('Confirmed')
     role = SelectField('Role', coerce=int)
+    avatar = FileField('头像')
     name = StringField('真实姓名', validators=[Length(0, 64)])
     location = StringField('您的位置', validators=[Length(0, 64)])
     about_me = TextAreaField('个人介绍')
+    study = BooleanField('学习')
+    games = BooleanField('游戏')
+    sports = BooleanField('运动')
+    music =BooleanField('音乐')
     submit = SubmitField('提交')
 
     def __init__(self, user, *args, **kwargs):

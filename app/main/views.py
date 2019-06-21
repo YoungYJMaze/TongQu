@@ -103,18 +103,41 @@ def user(username):
 def edit_profile():
     form = EditProfileForm()
     if form.validate_on_submit():
+
         current_user.name = form.name.data
         current_user.location = form.location.data
         current_user.about_me = form.about_me.data
-        current_user.concern = form.concern.data
+        concern = []
+        if form.games.data:
+            concern.append(form.games.name)
+        if form.sports.data:
+            concern.append(form.sports.name)
+        if form.study.data:
+            concern.append(form.study.name)
+        if form.music.data:
+            concern.append(form.music.name)
+
+        concernlist = " ".join(concern)
+        current_user.concern = concernlist
+        avatar = request.files['avatar']
+        fname= avatar.filename
+        UPLOAD_FOLDER = current_app.config['UPLOAD_FOLDER']
+        ALLOWED_EXTENSIONS= ['png','jpg','jpeg','gif']
+        flag = '.' in fname and fname.rsplit('.',1)[1] in ALLOWED_EXTENSIONS
+        if not flag:
+            flash('文件类型错误，必须是png，jpg，jpeg，gif格式中的一种')
+            return redirect(url_for('.user',username=current_user.username))
+        avatar.save(u'{}{}_{}'.format(UPLOAD_FOLDER,current_user.username,fname))
+        current_user.real_avatar = u'/static/avatar/{}_{}'.format(current_user.username ,fname)
         db.session.add(current_user._get_current_object())
         db.session.commit()
         flash('您的用户档案已更新.')
         return redirect(url_for('.user', username=current_user.username))
+    form.avatar=current_user.real_avatar
     form.name.data = current_user.name
     form.location.data = current_user.location
     form.about_me.data = current_user.about_me
-    form.concern.data = current_user.concern
+
     return render_template('edit_profile.html', form=form)
 
 
@@ -132,7 +155,29 @@ def edit_profile_admin(id):
         user.name = form.name.data
         user.location = form.location.data
         user.about_me = form.about_me.data
-        db.session.add(user)
+        concern = []
+        if form.games.data:
+            concern.append(form.games.name)
+        if form.sports.data:
+            concern.append(form.sports.name)
+        if form.study.data:
+            concern.append(form.study.name)
+        if form.music.data:
+            concern.append(form.music.name)
+
+        concernlist = " ".join(concern)
+        current_user.concern = concernlist
+        avatar = request.files['avatar']
+        fname= avatar.filename
+        UPLOAD_FOLDER = current_app.config['UPLOAD_FOLDER']
+        ALLOWED_EXTENSIONS= ['png','jpg','jpeg','gif']
+        flag = '.' in fname and fname.rsplit('.',1)[1] in ALLOWED_EXTENSIONS
+        if not flag:
+            flash('文件类型错误，必须是png，jpg，jpeg，gif格式中的一种')
+            return redirect(url_for('.user',username=current_user.username))
+        avatar.save(u'{}{}_{}'.format(UPLOAD_FOLDER,current_user.username,fname))
+        current_user.real_avatar = u'/static/avatar/{}_{}'.format(current_user.username ,fname)
+        db.session.add(current_user._get_current_object())
         db.session.commit()
         flash('用户档案已更新.')
         return redirect(url_for('.user', username=user.username))
@@ -143,6 +188,7 @@ def edit_profile_admin(id):
     form.name.data = user.name
     form.location.data = user.location
     form.about_me.data = user.about_me
+    form.avatar=current_user.real_avatar
     return render_template('edit_profile.html', form=form, user=user)
 
 

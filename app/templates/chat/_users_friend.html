@@ -4,9 +4,15 @@
 <div class="msg-box">
     <div class="picture">
         <a href ="{{url_for('main.user' ,username=follow.user.username )}}">
-            <img class="pop-card" data-position="right center" data-offset="-40"
+           {% if follow.user.real_avatar %}
+                       <img class="pop-card"  data-position="right center" data-offset="-40"
+             data-href="{{ url_for('chat.get_profile', user_id=follow.user.id) }}"
+             src="{{ follow.user.real_avatar }}" height="40" width="40">
+               {% else %}
+        <img class="pop-card"  data-position="right center" data-offset="-40"
              data-href="{{ url_for('chat.get_profile', user_id=follow.user.id) }}"
              src="{{ follow.user.gravatar() }}">
+               {% endif %}
             </a>
     </div>
     <div class="msg2">

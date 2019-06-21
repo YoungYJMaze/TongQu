@@ -14,7 +14,11 @@
     <tr>
         <td>
             <a href="{{ url_for('.user', username = follow.user.username) }}">
-                <img class="img-rounded" src="{{ follow.user.gravatar(size=32) }}">
+                {% if follow.user.real_avatar %}
+    <img class="img-rounded" src="{{ follow.user.real_avatar }}" width="32px" height="32px" >
+{% else %}
+<img class="img-rounded profile-thumbnail" src="{{ follow.user.gravatar(size=32) }}" >
+{% endif %}
                 {{ follow.user.username }}
             </a>
         </td>

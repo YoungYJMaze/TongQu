@@ -3,9 +3,15 @@
     <div class="picture">
 
         <a href ="{{url_for('main.user' ,username=user.username )}}">
-        <img class="pop-card" data-position="right center" data-offset="-40"
+           {% if user.real_avatar %}
+                       <img class="pop-card"  data-position="right center" data-offset="-40"
+             data-href="{{ url_for('chat.get_profile', user_id=user.id) }}"
+             src="{{ user.real_avatar }}" height="40" width="40">
+               {% else %}
+        <img class="pop-card"  data-position="right center" data-offset="-40"
              data-href="{{ url_for('chat.get_profile', user_id=user.id) }}"
              src="{{ user.gravatar() }}">
+               {% endif %}
     </a>
     </div>
     <div class="msg2">

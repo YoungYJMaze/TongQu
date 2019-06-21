@@ -1,7 +1,11 @@
 <div class="ui items profile-card">
     <div class="item">
         <div class="ui tiny image">
+            {% if user.real_avatar %}
+            <img src="{{ user.real_avatar }}"height="40" width="40">
+            {% else %}
             <img src="{{ user.gravatar() }}">
+            {% endif %}
         </div>
         <div class="content">
             <div class="header">{{ user.username }}

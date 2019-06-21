@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-from flask import render_template, redirect, request, url_for, flash, current_app
+from flask import render_template, redirect, request, url_for, flash, current_app,abort
 from flask_login import login_user, logout_user, login_required, \
             current_user
 from . import chat
@@ -19,6 +19,7 @@ from flask_login import current_user
 from flask_socketio import disconnect
 from sqlalchemy import and_
 from sqlalchemy import or_
+from flask_socketio import join_room, leave_room
 online_users=[]
 
 
@@ -42,6 +43,20 @@ def authenticated_only(f):
                         return f(*args, **kwargs)
     return wrapped
 
+@socketio.on('join')
+def on_join(data):
+    username = data['username']
+    room = data['room']
+    join_room(room)
+    socketio.send(username + ' has entered the room.', room=room)
+
+
+@socketio.on('leave')
+def on_leave(data):
+    username = data['username']
+    room = data['room']
+    leave_room(room)
+    socketio.send(username + ' has left the room.', room=room)
 
 
 @socketio.on('my event')
@@ -104,12 +119,13 @@ def disconnect():
 @login_required
 def room():
     global online_users
+    user = current_user
     amount = current_app.config['FLASKY_POSTS_PER_PAGE']
     messages = Message.query.filter(Message.to=='room').order_by(Message.timestamp.asc())[-amount:]
     user_amount = User.query.count()
     online_num=len(online_users)
     token=current_user.generate_auth_token(3600)
-    return render_template('chat/room.html',messages=messages, user_amount=user_amount,online_user=online_num,token=token,users=online_users)
+    return render_template('chat/room.html',user=user,messages=messages, user_amount=user_amount,online_user=online_num,token=token,users=online_users)
 
 
 @chat.route('/friends')
@@ -126,7 +142,7 @@ def friends():
     follows = [{'user': item.followed, 'timestamp': item.timestamp}
                for item in pagination.items]
 
-    return render_template('chat/friends.html',token=token,follows=follows)
+    return render_template('chat/friends.html',user=user,token=token,follows=follows)
 
 @chat.route('/friends/<othername>')
 @login_required

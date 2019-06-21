@@ -114,6 +114,7 @@ class User(UserMixin, db.Model):
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     messages = db.relationship('Message',back_populates='author',cascade='all')
     concern = db.Column(db.Text)
+    real_avatar = db.Column(db.String(128),default=None)
     followed = db.relationship('Follow',
                                foreign_keys=[Follow.follower_id],
                                backref=db.backref('follower', lazy='joined'),
@@ -230,6 +231,9 @@ class User(UserMixin, db.Model):
         hash = self.avatar_hash or self.gravatar_hash()
         return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
             url=url, hash=hash, size=size, default='monsterid', rating=rating)
+
+
+
 
     def follow(self, user):
         if not self.is_following(user):

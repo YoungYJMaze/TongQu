@@ -12,7 +12,21 @@
 
 <script></script> 
 <div class="big-well" >
-    
+        {% if concern  %}
+    <form class="login ui large form" method="post" action="{{ url_for('chat.room',roomname=i) }}">
+  <select  onchange="window.location='/chat/room'+this.value;">
+{#   <input id="room_id" type="button" name="room_id" checked="">#}
+  <option selected="selected" disabled="disabled"  style='display: none' value=''></option>
+    <option value="">all</option>
+    {% for i in concern %}
+
+    <option value="/{{ i }}">{{ i }}</option>
+        {% endfor %}
+        </select>
+    </form>
+            {% else  %}
+
+      {% endif  %}
     <div class="chatlist">     
         <div class="wrap">
             <span class="span1">在线人数</span></div>

@@ -68,8 +68,12 @@ def handle_my_custom_event(data):
 
 @socketio.on('new message',namespace='/room')
 def new_message(message_body):
+    global to
     html_message = to_html(message_body)
-    message = Message(author=current_user._get_current_object(), body=html_message,to='room')
+    if to:
+     message = Message(author=current_user._get_current_object(), body=html_message,to=to)
+    else:
+     message = Message(author=current_user._get_current_object(), body=html_message,to='room')
     db.session.add(message)
     db.session.commit()
     emit('new message',
@@ -118,14 +122,41 @@ def disconnect():
 @chat.route('/room')
 @login_required
 def room():
-    global online_users
+    global to
+    to='room'
+    online_users=User.query.all()
     user = current_user
+    concern = current_user.concern
+    concern=concern.split(" ")
     amount = current_app.config['FLASKY_POSTS_PER_PAGE']
     messages = Message.query.filter(Message.to=='room').order_by(Message.timestamp.asc())[-amount:]
     user_amount = User.query.count()
     online_num=len(online_users)
     token=current_user.generate_auth_token(3600)
-    return render_template('chat/room.html',user=user,messages=messages, user_amount=user_amount,online_user=online_num,token=token,users=online_users)
+    return render_template('chat/room.html',concern=concern,user=user,messages=messages, user_amount=user_amount,online_user=online_num,token=token,users=online_users)
+
+@chat.route('/room/<roomname>')
+@login_required
+def rooms(roomname):
+    global to
+    to=roomname
+    user=current_user
+    online_users=User.query.all()
+    # concern = current_user.concern
+    # concern=concern.split(" ")
+    users=[]
+    for i in online_users:
+        concern=i.concern.split(" ")
+        if roomname in concern:
+            users.append(i)
+    concern = current_user.concern
+    concern=concern.split(" ")
+    amount = current_app.config['FLASKY_POSTS_PER_PAGE']
+    messages = Message.query.filter(Message.to==roomname).order_by(Message.timestamp.asc())[-amount:]
+    user_amount = len(users)
+    online_num = len(users)
+    token=current_user.generate_auth_token(3600)
+    return render_template('chat/room.html',concern=concern,user=user,messages=messages, user_amount=user_amount,online_user=online_num,token=token,users=users,to=to)
 
 
 @chat.route('/friends')
